@@ -59,12 +59,8 @@ test n = removes
         removes = sort . map f2 . filter f1 $ cartProd [1..n] [1..n]
 
 sieveSundaram :: Integer -> [Integer]
-sieveSundaram n = map f3 $ range \\ removes
-  where range = [1..n]
-        f1 (i,j) = i <= j && i + j + 2*i*j <= n
-        f2 (i,j) = i + j + 2*i*j 
-        f3 n = 2 * n + 1
-        removes = (sort . map f2 . filter f1) (cartProd range range)
+sieveSundaram n =
+  map (\x->2*x+1) $ [1..n] \\ (filter (<n) . map (\(i,j) -> i + j + 2*i*j)) (cartProd [1..n] [1..n])
 
 cartProd :: [a] -> [b] -> [(a,b)]
 cartProd xs ys = [(x,y) | x <- xs, y <- ys]
